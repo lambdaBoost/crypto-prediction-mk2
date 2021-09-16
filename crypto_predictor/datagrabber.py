@@ -1,4 +1,5 @@
 from binance.client import Client
+import pandas as pd
 
 
 def make_trading_pairs(currency_list):
@@ -101,6 +102,55 @@ def get_qty_from_trades(trades):
     return qtys
 
 
+def get_price_from_trades(trades):
+    """
+    returns the price of a given coin
+    price is in units of the respective benchmark currency
+    
+    """
+    
+    coin_price = float(trades[0]['price'])
+    
+    return coin_price
+
+
+
+def get_benchmark_currency_prices(benchmark_list, api_key, api_secret, usd='USDT'):
+    """
+    
+
+    Parameters
+    ----------
+    benchmark_list : str
+        list of benchmark currencies
+    api_key : str
+        api key object
+    api_secret : str
+        api secret object
+    usd : str, optional
+        stable coin to use for usd conversion. The default is 'USDT'.
+
+    Returns
+    -------
+    dict
+
+    """
+    
+    benchmark_prices = pd.DataFrame(columns = ['usd'], index=benchmark_list)
+    
+    for c in benchmark_list:
+        
+        pair = c + usd
+        
+        last_trade = get_recent_trades(pair, 1, api_key, api_secret)
+        
+        price = float(last_trade[0]['price'])
+        
+        benchmark_prices['usd'][c] = price
+        
+    return benchmark_prices
+        
+    
 
 def get_available_symbols(api_key, api_secret):
     
@@ -174,3 +224,12 @@ def make_pair_list(currency_list, benchmark_currencies):
     
     
     return pairs
+
+
+def get_coin_prices(currency_list):
+    
+    """
+    return a dictionary of prices in usd
+    """
+    
+    

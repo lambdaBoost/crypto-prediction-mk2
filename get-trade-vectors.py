@@ -6,7 +6,7 @@
 import os
 import pandas as pd
 
-from crypto_predictor import datagrabber
+from crypto_predictor import datagrabber, data_process
 
 
 
@@ -36,8 +36,8 @@ if __name__ == "__main__":
     currency_list = datagrabber.get_viable_currencies(BENCHMARK_CURRENCIES, full_pair_list)
     
     
-    results_df = pd.DataFrame(columns = currency_list, index=BENCHMARK_CURRENCIES)
-    
+    qty_df = pd.DataFrame(columns = currency_list, index=BENCHMARK_CURRENCIES)
+    price_df = pd.DataFrame(columns = currency_list, index=BENCHMARK_CURRENCIES)
     
     for i in range(len(BENCHMARK_CURRENCIES)):
         for j in(range(len(currency_list))):
@@ -52,9 +52,22 @@ if __name__ == "__main__":
                     trades = datagrabber.get_recent_trades(pair, LIMIT, api_key, api_secret)
                     #trades = datagrabber.filter_cutoff_time(trades, cutoff_time)
                     trade_total = sum(datagrabber.get_qty_from_trades(trades))
+                    trade_price = datagrabber.get_price_from_trades(trades)
                     
-                    results_df[curr2][curr1] = trade_total
+                    qty_df[curr2][curr1] = trade_total
+                    price_df[curr2][curr1] = trade_price
                     
                 except:
                     continue
+                
+    
+    #convert the qty and price data to a single df of total trade value in usd
+    qty_df = data_process.remove_nas(qty_df)
+    price_df = data_process.remove_nas(price_df)
+    
+    benchmark_prices = datagrabber.get_benchmark_currency_prices(BENCHMARK_CURRENCIES, api_key, api_secret)
+    
+    
+    #final output - total usd traded between all pairs
+    trades_df = data_process.convert_trades_to_usd(qty_df, price_df, benchmark_prices)
 
