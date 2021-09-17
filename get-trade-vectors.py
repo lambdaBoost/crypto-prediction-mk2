@@ -68,6 +68,12 @@ if __name__ == "__main__":
     benchmark_prices = datagrabber.get_benchmark_currency_prices(BENCHMARK_CURRENCIES, api_key, api_secret)
     
     
-    #final output - total usd traded between all pairs
+    #total usd traded between all pairs
     trades_df = data_process.convert_trades_to_usd(qty_df, price_df, benchmark_prices)
 
+    scaled_df = data_process.scale_df(trades_df)
+    
+    #input array for CNN
+    data_array = data_process.vectors_to_array(scaled_df, 16, BENCHMARK_CURRENCIES)
+    data_process.plot_3d_array(data_array)
+    
