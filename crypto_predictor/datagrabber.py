@@ -30,6 +30,29 @@ def get_biggest_trading_pair(api_key, api_secret):
     pair = exchange_info['symbols'][0]['symbol']
     
     return pair
+
+
+def get_all_prices(api_key, api_secret):
+    """
+    return price of all traded pairs on binance
+
+    Parameters
+    ----------
+    api_key : str
+        DESCRIPTION.
+    api_secret : str
+        DESCRIPTION.
+
+    Returns
+    -------
+    prices : dict
+        prices of all trade pairs
+
+    """
+    client = Client(api_key, api_secret)
+    prices = client.get_all_tickers()
+
+    return prices
     
     
 
@@ -231,5 +254,8 @@ def get_coin_prices(currency_list):
     """
     return a dictionary of prices in usd
     """
+    
+    
+
     
     

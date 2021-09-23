@@ -90,7 +90,7 @@ def scale_df(df):
     
     return df_scaled
 
-def vectors_to_array(df, size, benchmark_currencies):
+def vectors_to_array(df, size, benchmark_currencies, mc_data):
     """
     convert trade vectors to an n-space array where coords of each point 
     represents the trade vector of a given currency. Each point carries the 
@@ -106,6 +106,8 @@ def vectors_to_array(df, size, benchmark_currencies):
         side length of array
     benchmark_currencies: str
         list of benchmark currencies
+        mc_data: DataFrame
+            list of top ccs by market cap. from the filter_viable_coins method
 
     Returns
     -------
@@ -136,7 +138,12 @@ def vectors_to_array(df, size, benchmark_currencies):
             pos.append(coord)
         
         pos = tuple(pos)
-        ary[pos] = ary[pos] + 1
+        
+        try:
+            ary[pos] = ary[pos] + mc_data[mc_data['coin']==c]['mkt_cap'].values[0]
+            
+        except:
+            print(c + 'not included in array due to name mismatch')
         
     return ary
 
