@@ -81,7 +81,7 @@ if __name__ == "__main__":
             mc_data.reset_index(inplace=True)
             
         
-        if round(time.time() % 3600 == 0):
+        if round(time.time()) % 3600 == 0:
             
     
     
