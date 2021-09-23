@@ -50,6 +50,7 @@ if __name__ == "__main__":
     
     scaler = MinMaxScaler()
     mc_data[['mkt_cap']] = scaler.fit_transform(mc_data[['mkt_cap']])
+    mc_data.reset_index(inplace=True)
     
    
     
