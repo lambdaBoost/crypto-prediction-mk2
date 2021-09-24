@@ -43,10 +43,11 @@ if __name__ == "__main__":
     currency_list = datagrabber.get_viable_currencies(BENCHMARK_CURRENCIES, full_pair_list)
     
     mc_data = cmc_data.get_mkp_caps(cmc_key)
-    
-    
-    
+
     mc_data = cmc_data.filter_viable_coins(currency_list, mc_data, BENCHMARK_CURRENCIES, 100)
+    
+    qty_df = pd.DataFrame(columns = currency_list, index=BENCHMARK_CURRENCIES)
+    price_df = pd.DataFrame(columns = currency_list, index=BENCHMARK_CURRENCIES)
     
     scaler = MinMaxScaler()
     mc_data[['mkt_cap']] = scaler.fit_transform(mc_data[['mkt_cap']])
