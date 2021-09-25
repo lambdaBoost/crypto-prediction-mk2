@@ -58,7 +58,7 @@ if __name__ == "__main__":
     while True:
         
         #daily update mkt cap data (600 seconds after hour to avoid conflict with second conditional)
-        if round(time.time()) % 43200 == 600:
+        if round(time.time()) % 43200 == 300:
             top_pair = datagrabber.get_biggest_trading_pair(api_key, api_secret)
     
             top_pair_trades = datagrabber.get_recent_trades(top_pair, LIMIT, api_key, api_secret)
@@ -83,7 +83,7 @@ if __name__ == "__main__":
             mc_data.reset_index(inplace=True)
             
         
-        if round(time.time()) % 3600 == 0:
+        if round(time.time()) % 600 == 0:
             
     
     
