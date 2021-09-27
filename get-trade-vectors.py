@@ -46,6 +46,11 @@ if __name__ == "__main__":
 
     mc_data = cmc_data.filter_viable_coins(currency_list, mc_data, BENCHMARK_CURRENCIES, 100)
     
+    print('market cap data updated at ' + 
+          str(time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(time.time())))
+          + ' top currencies are: '
+          + str(list(mc_data.coin)))
+    
     qty_df = pd.DataFrame(columns = currency_list, index=BENCHMARK_CURRENCIES)
     price_df = pd.DataFrame(columns = currency_list, index=BENCHMARK_CURRENCIES)
     
@@ -72,6 +77,11 @@ if __name__ == "__main__":
             mc_data = cmc_data.get_mkp_caps(cmc_key)
     
             mc_data = cmc_data.filter_viable_coins(currency_list, mc_data, BENCHMARK_CURRENCIES, 100)
+            
+            print('market cap data updated at ' + 
+                  str(time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(time.time())))
+                  + ' top currencies are: '
+                  + str(list(mc_data.coin)))
     
             scaler = MinMaxScaler()
             mc_data[['mkt_cap']] = scaler.fit_transform(mc_data[['mkt_cap']])
@@ -97,7 +107,6 @@ if __name__ == "__main__":
                     mc = mc_data['mkt_cap'][j]
                         
                     pair = curr2 + curr1
-                    print(pair)
                         
                     try:
                         trades = datagrabber.get_recent_trades(pair, LIMIT, api_key, api_secret)
