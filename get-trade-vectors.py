@@ -17,6 +17,8 @@ api_key = os.environ.get('binance_api')
 api_secret = os.environ.get('binance_secret')
 cmc_key = os.environ.get('COINMARKETCAP_API')
 
+
+
 #currencies to get trade data against
 BENCHMARK_CURRENCIES = ['ETH', 'BTC', 'BNB']
 
